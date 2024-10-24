@@ -42,7 +42,6 @@ function createGrid(gridCount) {
         container.appendChild(gridRow);
     };
 
-    // Put the addition of the event listeners in another function?
     container.addEventListener("mouseover", (event) => {
         if (event.target.classList.contains("square")) {
             alterGridSquareColor(event.target);
