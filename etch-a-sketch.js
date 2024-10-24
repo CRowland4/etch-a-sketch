@@ -1,33 +1,70 @@
-createGrid(50);
+main();
 
 
-const gridSquares = document.querySelectorAll(".square");
-gridSquares.forEach(square => addHoverEffect(square));
+function main() {
+    document.querySelector("#newGridBtn").addEventListener("click", createNewGrid);
+    createGrid(25);
+}
 
 
-function addHoverEffect(square) {
-    square.addEventListener("mouseover", (event) => {
-        event.target.style.backgroundColor = "red";
-    });
+function createNewGrid() {
+    const newGridSize = Number(prompt("Enter a size for the new grid:"));
+
+    if (typeof(newGridSize) !== 'number') {
+        alert("Grid size must be a number!")
+    } else if (newGridSize < 1) {
+        alert("Grid size must be positive!")
+    } else if (newGridSize > 100) {
+        alert("Maximum grid size is 100!")
+    } else {
+        removeOldGrid();
+        createGrid(newGridSize);
+    };
+}
+
+
+function removeOldGrid() {
+    const newContainer = document.createElement("div");
+    newContainer.id = "container";
+
+    document.querySelector("#container").replaceWith(newContainer);
 }
 
 
 function createGrid(gridCount) {
+    const container = document.querySelector("#container");
     for (let i = 0; i < gridCount; i++) {
-        let rowDiv = document.createElement("div");
-        rowDiv.id = `row-${i}`;
-        rowDiv.style.flexGrow = 1;
-        rowDiv.classList.add("row");
-    
+        const gridRow = createGridRow(i);
         for (let j = 0; j < gridCount; j++) {
-            let square = document.createElement("div");
-            square.id = `square-${i}-${j}`;
-            square.classList.add("square");
-            square.style.flexGrow = 1;
-    
-            rowDiv.appendChild(square);
+            gridRow.appendChild(createGridSquare(i, j));
         };
     
-        container.appendChild(rowDiv);
+        container.appendChild(gridRow);
     };
+
+    container.addEventListener("mouseover", (event) => {
+        if (event.target.classList.contains("square")) {
+            event.target.style.backgroundColor = "red";
+        };
+    });
+}
+
+
+function createGridRow(rowNumber) {
+    const rowDiv = document.createElement("div");
+    rowDiv.id = `row-${rowNumber}`;
+    rowDiv.style.flexGrow = 1;
+    rowDiv.classList.add("row");
+
+    return rowDiv;
+}
+
+
+function createGridSquare(rowNumber, squareNumber) {
+    const square = document.createElement("div");
+    square.id = `square-${rowNumber}-${squareNumber}`;
+    square.classList.add("square");
+    square.style.flexGrow = 1;
+
+    return square;
 }
