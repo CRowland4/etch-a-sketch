@@ -42,11 +42,36 @@ function createGrid(gridCount) {
         container.appendChild(gridRow);
     };
 
+    // Put the addition of the event listeners in another function?
     container.addEventListener("mouseover", (event) => {
         if (event.target.classList.contains("square")) {
-            event.target.style.backgroundColor = "red";
+            alterGridSquareColor(event.target);
         };
     });
+}
+
+
+function alterGridSquareColor(gridSquare) {
+    gridSquare.style.backgroundColor = getRandomRGBColor();
+    increaseElementOpacity(gridSquare, .1);
+}
+
+
+function increaseElementOpacity(element, increaseAmount) {
+    const currentOpacity = Number(element.style.opacity);
+
+    if (currentOpacity < 1) {
+        element.style.opacity = currentOpacity + increaseAmount;
+    };
+}
+
+
+function getRandomRGBColor() {
+    const redValue = Math.floor(Math.random() * 255);
+    const blueValue = Math.floor(Math.random() * 255);
+    const greenValue = Math.floor(Math.random() * 255);
+
+    return `rgb(${redValue}, ${blueValue}, ${greenValue})`;
 }
 
 
@@ -65,6 +90,7 @@ function createGridSquare(rowNumber, squareNumber) {
     square.id = `square-${rowNumber}-${squareNumber}`;
     square.classList.add("square");
     square.style.flexGrow = 1;
+    square.style.opacity = 0;
 
     return square;
 }
